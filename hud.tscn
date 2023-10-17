@@ -1,0 +1,137 @@
+[gd_scene load_steps=8 format=3 uid="uid://xttpic221les"]
+
+[ext_resource type="Script" path="res://hud.gd" id="1_0wb5q"]
+[ext_resource type="FontFile" uid="uid://b2mjwirki5n11" path="res://fonts/Bowling.otf" id="2_sax4s"]
+[ext_resource type="Texture2D" uid="uid://l0u34kuf0au7" path="res://art/Heart.png" id="3_dtm1k"]
+[ext_resource type="Texture2D" uid="uid://k7dvynvkj7gp" path="res://art/damage_overlay.png" id="4_qjyki"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_wh5ym"]
+action = &"start_game"
+
+[sub_resource type="Shortcut" id="Shortcut_syg6w"]
+events = [SubResource("InputEventAction_wh5ym")]
+
+[sub_resource type="GDScript" id="GDScript_1igpj"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_0wb5q")
+
+[node name="DamageOverlay" type="TextureRect" parent="."]
+visible = false
+offset_left = 1.0
+offset_top = 3.0
+offset_right = 1281.0
+offset_bottom = 723.0
+texture = ExtResource("4_qjyki")
+
+[node name="ScoreLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.5
+offset_right = 22.5
+offset_bottom = 81.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_sax4s")
+theme_override_font_sizes/font_size = 64
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollectableLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -45.0
+offset_bottom = 89.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("2_sax4s")
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.5
+offset_top = -162.0
+offset_right = 340.5
+offset_bottom = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_sax4s")
+theme_override_font_sizes/font_size = 64
+text = "Watch out for Wallace and the Band!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -140.0
+offset_right = 100.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_sax4s")
+theme_override_font_sizes/font_size = 64
+shortcut = SubResource("Shortcut_syg6w")
+text = "Start"
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="DamageTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="HPContainer" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_1igpj")
+metadata/_edit_group_ = true
+
+[node name="HP1" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[node name="HP2" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[node name="HP3" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[node name="HP4" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[node name="HP5" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[node name="HP6" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[node name="HP7" type="TextureRect" parent="HPContainer"]
+layout_mode = 2
+texture = ExtResource("3_dtm1k")
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_damage_timer_timeout"]

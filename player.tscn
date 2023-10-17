@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://cd4d3v53k8xey"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_e83uc"]
+[ext_resource type="Texture2D" uid="uid://b8hg8eq6dfuj2" path="res://art/fonchwalking_3.png" id="2_mwy4q"]
+[ext_resource type="Texture2D" uid="uid://binoxrhow4fuq" path="res://art/fonchwalking_4.png" id="3_lswxn"]
+[ext_resource type="Texture2D" uid="uid://ca664rrohvvtf" path="res://art/fonchwalking_1.png" id="4_3kc08"]
+[ext_resource type="Texture2D" uid="uid://upf8o8438g0w" path="res://art/fonchwalking_2.png" id="5_ipe2j"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4tm8l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mwy4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lswxn")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_3kc08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ipe2j")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ow55x"]
+radius = 29.0
+height = 100.0
+
+[node name="Player" type="Area2D"]
+collision_mask = 6
+script = ExtResource("1_e83uc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_4tm8l")
+animation = &"walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_ow55x")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
