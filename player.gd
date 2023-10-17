@@ -13,6 +13,7 @@ var health = maxhealth
 func _ready():
 	screen_size = get_viewport_rect().size
 	HPChanged.emit(maxhealth, 0) ## Delta is 0 to indicate new game
+	$Weapon.hide()
 	hide()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,6 +44,9 @@ func _process(delta):
 	elif velocity.y != 0:
 		$AnimatedSprite2D.animation = "up"
 		$AnimatedSprite2D.flip_v = velocity.y > 0
+		
+	if Input.is_action_pressed("attack"):
+		attack()
 
 ## When colliding with an enemy
 func _on_body_entered(body): 
@@ -61,7 +65,12 @@ func start(pos):
 	show()
 	$CollisionShape2D.disabled = false
 
-
+func attack():
+	$Weapon/WeaponHitbox.disabled = false
+	$Weapon.show()
+	await get_tree().create_timer(0.5).timeout
+	$Weapon.hide()
+	$Weapon/WeaponHitbox.disabled = true
 
 func _on_area_entered(area):
 	var item_name = area.get_meta("item_name")
@@ -75,3 +84,7 @@ func _on_area_entered(area):
 		_:
 			pass
 		
+
+
+func _on_weapon_body_entered(body):
+	body.queue_free()

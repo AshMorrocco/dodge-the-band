@@ -54,6 +54,11 @@ func _on_mob_timer_timeout():
 	# var mob_spawn_location = get_node("MobPath/MobSpawnLocation")
 	var mob_spawn_location = get_node("Path2D/PathFollow2D")
 	mob_spawn_location.progress_ratio = randf()
+	
+	# Dont spawn mob within 100 px of player, for fairness
+	var dist = mob_spawn_location.position.distance_to(get_node("Player").position)
+	if dist < 100:
+		return
 
 	# Set the mob's direction perpendicular to the path direction.
 	var direction = mob_spawn_location.rotation + PI / 2
