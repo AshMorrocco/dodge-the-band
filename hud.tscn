@@ -17,11 +17,13 @@ events = [SubResource("InputEventAction_wh5ym")]
 script = ExtResource("1_0wb5q")
 
 [node name="DamageOverlay" type="TextureRect" parent="."]
-visible = false
-offset_left = 1.0
-offset_top = 3.0
-offset_right = 1281.0
-offset_bottom = 723.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -640.0
+offset_right = 640.0
+offset_bottom = 720.0
+grow_horizontal = 2
 texture = ExtResource("4_qjyki")
 
 [node name="ScoreLabel" type="Label" parent="."]

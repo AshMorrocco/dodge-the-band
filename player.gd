@@ -46,8 +46,11 @@ func _process(delta):
 	if velocity.x != 0:
 		$AnimatedSprite2D.animation = "walk"
 		$AnimatedSprite2D.flip_v = false
+		$Weapon.z_index = 1
 		$AnimatedSprite2D.flip_h = velocity.x < 0
+		$Weapon/WeaponSprite.flip_h = velocity.x < 0
 	elif velocity.y != 0:
+		$Weapon.z_index = -1
 		$AnimatedSprite2D.animation = "up"
 		$AnimatedSprite2D.flip_v = velocity.y > 0
 	
