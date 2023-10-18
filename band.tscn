@@ -69,7 +69,6 @@ metadata/_edit_group_ = true
 metadata/Entity = "Cousin It"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_gwkv2")
 animation = &"Witch"
 
@@ -78,5 +77,6 @@ position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_wqexu")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-100, -100, 200, 200)
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

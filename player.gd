@@ -1,7 +1,9 @@
 extends Area2D
+
 signal HPChanged(health, delta) ## When HP changes, report total HP and the change
 signal died(killing_entity) ## when hp hits 0, report what enemy we are touching
-signal collectedItem(item)
+signal collectedItem(item) ## looooot
+signal tookalife ## When we cause an enemy to vanish
 
 @export var speed = 400 ## How fast the player will move (px/s)
 @export var maxhealth = 3 ## How many hits the player can take, 
@@ -48,8 +50,9 @@ func _process(delta):
 	elif velocity.y != 0:
 		$AnimatedSprite2D.animation = "up"
 		$AnimatedSprite2D.flip_v = velocity.y > 0
-		
-	if Input.is_action_pressed("attack"):
+	
+	$Weapon.position = aim * 80
+	if Input.is_action_just_pressed("attack"):
 		attack()
 
 ## When colliding with an enemy
@@ -70,7 +73,6 @@ func start(pos):
 	$CollisionShape2D.disabled = false
 
 func attack():
-	$Weapon.position = aim * 80
 	$Weapon/WeaponHitbox.disabled = false
 	$Weapon.show()
 	await get_tree().create_timer(0.5).timeout
@@ -92,4 +94,5 @@ func _on_area_entered(area):
 
 
 func _on_weapon_body_entered(body):
+	tookalife.emit()
 	body.queue_free()
