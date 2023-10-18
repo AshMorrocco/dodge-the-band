@@ -33,9 +33,8 @@ func update_score(score):
 func update_HP(health, delta):
 	set_HP(health)
 	if delta < 0:
-		pass
-		#$DamageOverlay.show()
-		#$OverlayTimer.start()
+		$DamageOverlay.show()
+		$OverlayTimer.start()
 	if (abs(delta) > 1):
 		pass
 	

@@ -17,6 +17,7 @@ events = [SubResource("InputEventAction_wh5ym")]
 script = ExtResource("1_0wb5q")
 
 [node name="DamageOverlay" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5

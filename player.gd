@@ -68,6 +68,7 @@ func start(pos):
 	health = maxhealth
 	HPChanged.emit(maxhealth, 0) ## Delta is 0 to indicate new game
 	position = pos
+	$AnimatedSprite2D.animation = "walk"
 	show()
 	$CollisionShape2D.disabled = false
 
@@ -87,6 +88,10 @@ func _on_area_entered(area):
 			if health <= 6:
 				health += 1
 				HPChanged.emit(health, 1)
+		"green_heart":
+			if health >= 2:
+				health -= 1
+				HPChanged.emit(health, -1)
 		_:
 			pass
 
@@ -94,17 +99,15 @@ func _on_area_entered(area):
 func _on_body_entered(body): 
 	health -= onhitdamage
 	HPChanged.emit(health, -onhitdamage)
+	damage_invuln = true
+	# Must be deferred as we can't change physics properties on a physics callback.
+	$CollisionShape2D.set_deferred("disabled", true)
+	$AnimatedSprite2D.animation = "hurt"
+	$Weapon.hide()
 	if (health <= 0):
-		hide() # Player disappears after being hit
 		died.emit(body.get_meta("mob_name"))
-		# Must be deferred as we can't change physics properties on a physics callback.
-		$CollisionShape2D.set_deferred("disabled", true)
 	else:
 		body.queue_free()
-		$Weapon.hide()
-		damage_invuln = true
-		$CollisionShape2D.set_deferred("disabled", true)
-		$AnimatedSprite2D.animation = "hurt"
 		await get_tree().create_timer(0.5).timeout 
 		$AnimatedSprite2D.animation = "walk"
 		damage_invuln = false
