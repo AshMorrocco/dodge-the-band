@@ -17,7 +17,7 @@ func show_message(text):
 
 func show_game_over(who_landed_killing_blow):
 	$DamageOverlay.show()
-	$DamageTimer.stop()
+	$OverlayTimer.stop()
 	show_message("You were killed by "+str(who_landed_killing_blow))
 	# Wait for message timer to count down
 	await $MessageTimer.timeout
@@ -34,7 +34,7 @@ func update_HP(health, delta):
 	set_HP(health)
 	if delta < 0:
 		$DamageOverlay.show()
-		$DamageTimer.start()
+		$OverlayTimer.start()
 	if (abs(delta) > 1):
 		pass
 	
@@ -63,5 +63,5 @@ func _on_start_button_pressed():
 	start_game.emit()
 
 
-func _on_damage_timer_timeout():
+func _on_overlay_timer_timeout():
 	$DamageOverlay.hide()

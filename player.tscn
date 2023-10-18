@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://binoxrhow4fuq" path="res://art/fonchwalking_4.png" id="3_lswxn"]
 [ext_resource type="Texture2D" uid="uid://ca664rrohvvtf" path="res://art/fonchwalking_1.png" id="4_3kc08"]
 [ext_resource type="Texture2D" uid="uid://upf8o8438g0w" path="res://art/fonchwalking_2.png" id="5_ipe2j"]
-[ext_resource type="Texture2D" uid="uid://brn5et5dhi1to" path="res://art/playerEye_up4.png" id="5_w4ypp"]
+[ext_resource type="Texture2D" uid="uid://bs2lul5ktk4dy" path="res://art/fire_2.png" id="6_0wfmd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4tm8l"]
 animations = [{
@@ -36,8 +36,9 @@ animations = [{
 radius = 29.0
 height = 100.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vvvwp"]
-size = Vector2(89, 118)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jv727"]
+radius = 44.0
+height = 122.0
 
 [node name="Player" type="Area2D"]
 collision_mask = 6
@@ -55,17 +56,11 @@ collision_layer = 8
 collision_mask = 2
 
 [node name="WeaponHitbox" type="CollisionShape2D" parent="Weapon"]
-shape = SubResource("RectangleShape2D_vvvwp")
+shape = SubResource("CapsuleShape2D_jv727")
 
 [node name="WeaponSprite" type="Sprite2D" parent="Weapon"]
-texture = ExtResource("5_w4ypp")
-
-[node name="Label" type="Label" parent="."]
-offset_left = -19.0
-offset_top = 85.0
-offset_right = 21.0
-offset_bottom = 108.0
-text = "x"
+position = Vector2(0, 13)
+texture = ExtResource("6_0wfmd")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
