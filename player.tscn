@@ -1,14 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://cd4d3v53k8xey"]
+[gd_scene load_steps=12 format=3 uid="uid://cd4d3v53k8xey"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_e83uc"]
 [ext_resource type="Texture2D" uid="uid://b8hg8eq6dfuj2" path="res://art/fonchwalking_3.png" id="2_mwy4q"]
+[ext_resource type="Texture2D" uid="uid://c2p631cglbvmh" path="res://art/fonchHurt_1.png" id="2_ytxre"]
 [ext_resource type="Texture2D" uid="uid://binoxrhow4fuq" path="res://art/fonchwalking_4.png" id="3_lswxn"]
 [ext_resource type="Texture2D" uid="uid://ca664rrohvvtf" path="res://art/fonchwalking_1.png" id="4_3kc08"]
+[ext_resource type="Texture2D" uid="uid://dv7ypamk53fqv" path="res://art/fonchHurt_2.png" id="5_dd6h3"]
 [ext_resource type="Texture2D" uid="uid://upf8o8438g0w" path="res://art/fonchwalking_2.png" id="5_ipe2j"]
 [ext_resource type="Texture2D" uid="uid://bs2lul5ktk4dy" path="res://art/fire_2.png" id="6_0wfmd"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4tm8l"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ytxre")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_mwy4q")
@@ -18,6 +28,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_dd6h3")
+}],
+"loop": true,
+"name": &"up_hurt",
 "speed": 5.0
 }, {
 "frames": [{
@@ -46,7 +64,7 @@ script = ExtResource("1_e83uc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4tm8l")
-animation = &"walk"
+animation = &"up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ow55x")

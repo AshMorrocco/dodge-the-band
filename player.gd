@@ -11,6 +11,7 @@ signal tookalife ## When we cause an enemy to vanish
 var screen_size ## Size of the game window
 var health = maxhealth
 var aim = Vector2(1.0, 0.0) # Aim right by default
+var damage_invuln = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,6 +22,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if damage_invuln:
+		return
+		
 	var velocity = Vector2.ZERO # The player's movement vector
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -58,15 +62,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("attack"):
 		attack()
 
-## When colliding with an enemy
-func _on_body_entered(body): 
-	health -= onhitdamage
-	HPChanged.emit(health, -onhitdamage)
-	if (health <= 0):
-		hide() # Player disappears after being hit
-		died.emit(body.get_meta("mob_name"))
-		# Must be deferred as we can't change physics properties on a physics callback.
-		$CollisionShape2D.set_deferred("disabled", true)
+
 
 func start(pos):
 	health = maxhealth
@@ -93,8 +89,26 @@ func _on_area_entered(area):
 				HPChanged.emit(health, 1)
 		_:
 			pass
-		
 
+## When colliding with an enemy
+func _on_body_entered(body): 
+	health -= onhitdamage
+	HPChanged.emit(health, -onhitdamage)
+	if (health <= 0):
+		hide() # Player disappears after being hit
+		died.emit(body.get_meta("mob_name"))
+		# Must be deferred as we can't change physics properties on a physics callback.
+		$CollisionShape2D.set_deferred("disabled", true)
+	else:
+		body.queue_free()
+		$Weapon.hide()
+		damage_invuln = true
+		$CollisionShape2D.set_deferred("disabled", true)
+		$AnimatedSprite2D.animation = "hurt"
+		await get_tree().create_timer(0.5).timeout 
+		$AnimatedSprite2D.animation = "walk"
+		damage_invuln = false
+		$CollisionShape2D.set_deferred("disabled", false)
 
 func _on_weapon_body_entered(body):
 	tookalife.emit()
