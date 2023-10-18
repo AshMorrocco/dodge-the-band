@@ -16,14 +16,9 @@ func _process(_delta):
 		paused = !paused
 		get_tree().paused = paused
 		$HUD.pause_game(paused)
-		if paused:
-			$MobTimer.stop()
-			$CollectableTimer.stop()
-			$ScoreTimer.stop()
-		else:
-			$MobTimer.start()
-			$CollectableTimer.start()
-			$ScoreTimer.start()
+		$StartTimer.paused = paused
+		$MobTimer.paused = paused
+		$CollectableTimer.paused = paused
 
 
 func new_game():
@@ -40,7 +35,6 @@ func new_game():
 func game_over(who_landed_killing_blow):
 	$Music.stop()
 	$DeathSound.play()
-	$ScoreTimer.stop()
 	$MobTimer.stop()
 	$CollectableTimer.stop()
 	$HUD.show_game_over(who_landed_killing_blow)
@@ -84,7 +78,6 @@ func _on_score():
 
 func _on_start_timer_timeout():
 	$MobTimer.start()
-	$ScoreTimer.start()
 	$CollectableTimer.start()
 	
 

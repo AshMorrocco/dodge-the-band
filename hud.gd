@@ -43,13 +43,10 @@ func set_HP(value):
 		$HPContainer.get_child(i).visible = value > i
 
 func pause_game(paused):
-	$Message.text = "Paused!"
 	if paused:
-		$Message.show()
-		$DamageOverlay.show()
-	else:
-		$Message.hide()
-		$DamageOverlay.hide()
+		$Message.text = "Paused!"
+	$Message.visible = paused
+	$DamageOverlay.visible = paused
 
 func picked_up_collectable(item):
 	$CollectableLabel.text = item
