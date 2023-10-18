@@ -69,6 +69,7 @@ func start(pos):
 	HPChanged.emit(maxhealth, 0) ## Delta is 0 to indicate new game
 	position = pos
 	$AnimatedSprite2D.animation = "walk"
+	damage_invuln = false
 	show()
 	$CollisionShape2D.disabled = false
 
