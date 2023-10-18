@@ -8,6 +8,7 @@ signal collectedItem(item)
 @export var onhitdamage = 1 ## How much damage we take on hit
 var screen_size ## Size of the game window
 var health = maxhealth
+var aim = Vector2(1.0, 0.0) # Aim right by default
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,9 +28,12 @@ func _process(delta):
 		velocity.y += 1
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
-		
+	
+	velocity = velocity.normalized()
+	
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+		aim = velocity ## redirect aim when moving, lock when still
+		velocity *= speed
 		$AnimatedSprite2D.play()
 	else:
 		$AnimatedSprite2D.stop()
@@ -66,6 +70,7 @@ func start(pos):
 	$CollisionShape2D.disabled = false
 
 func attack():
+	$Weapon.position = aim * 80
 	$Weapon/WeaponHitbox.disabled = false
 	$Weapon.show()
 	await get_tree().create_timer(0.5).timeout

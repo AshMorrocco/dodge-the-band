@@ -37,7 +37,7 @@ radius = 29.0
 height = 100.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vvvwp"]
-size = Vector2(118, 118)
+size = Vector2(89, 118)
 
 [node name="Player" type="Area2D"]
 collision_mask = 6
@@ -55,12 +55,17 @@ collision_layer = 8
 collision_mask = 2
 
 [node name="WeaponHitbox" type="CollisionShape2D" parent="Weapon"]
-position = Vector2(60, 1)
 shape = SubResource("RectangleShape2D_vvvwp")
 
 [node name="WeaponSprite" type="Sprite2D" parent="Weapon"]
-position = Vector2(73, 2)
 texture = ExtResource("5_w4ypp")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -19.0
+offset_top = 85.0
+offset_right = 21.0
+offset_bottom = 108.0
+text = "x"
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
