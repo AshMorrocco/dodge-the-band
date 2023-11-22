@@ -77,6 +77,8 @@ func _on_score():
 
 
 func _on_start_timer_timeout():
+	paused = false
+	$HUD.pause_game(paused)
 	$MobTimer.start()
 	$CollectableTimer.start()
 	
