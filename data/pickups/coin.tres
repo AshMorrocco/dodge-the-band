@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Pickup" load_steps=3 format=3 uid="uid://chj6ablav5hse"]
+
+[ext_resource type="Script" path="res://data/pickup.gd" id="1_y75wb"]
+[ext_resource type="Texture2D" uid="uid://yvvf4oatrapb" path="res://assets/art/items/coin.png" id="2_gaccw"]
+
+[resource]
+script = ExtResource("1_y75wb")
+type = "coin"
+sprite = ExtResource("2_gaccw")
+health_effect = 0
+kill = false
+is_collectable = true

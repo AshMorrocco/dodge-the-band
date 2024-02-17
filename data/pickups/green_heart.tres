@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Pickup" load_steps=4 format=3 uid="uid://c1qq5qhfjpc2s"]
+
+[ext_resource type="PackedScene" uid="uid://dc6kihcs3lysf" path="res://scenes/game/items/green_heart.tscn" id="1_tw08p"]
+[ext_resource type="Script" path="res://data/pickup.gd" id="1_yglgv"]
+[ext_resource type="Texture2D" uid="uid://4uy0j0ncc3hl" path="res://assets/art/items/Heart_green.png" id="3_otolc"]
+
+[resource]
+script = ExtResource("1_yglgv")
+type = "green_heart"
+scene = ExtResource("1_tw08p")
+sprite = ExtResource("3_otolc")
+health_effect = -1
+kill = false

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Enemy" load_steps=2 format=3 uid="uid://b5d1244xs6f5j"]
+
+[ext_resource type="Script" path="res://data/enemy.gd" id="2_8upcq"]
+
+[resource]
+script = ExtResource("2_8upcq")
+type = "Zolstar"
+health_effect = -1
+kill = true

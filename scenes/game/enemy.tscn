@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=3 uid="uid://b0n3qdem2p4en"]
+
+[ext_resource type="Script" path="res://scenes/game/enemy.gd" id="1_83mrx"]
+[ext_resource type="Texture2D" uid="uid://b7ca52mo1lyji" path="res://assets/art/enemies/CousinWalking_2.png" id="2_7d1ca"]
+[ext_resource type="Texture2D" uid="uid://78u14luoe0bg" path="res://assets/art/enemies/CousinWalking_3.png" id="3_j50fq"]
+[ext_resource type="Texture2D" uid="uid://dbh5rau3vfnkl" path="res://assets/art/enemies/wallaceWalking_1.png" id="4_t0p7c"]
+[ext_resource type="Texture2D" uid="uid://bijrqm21dcdti" path="res://assets/art/enemies/wallaceWalking_2.png" id="5_3e06j"]
+[ext_resource type="Texture2D" uid="uid://hffghcw570n5" path="res://assets/art/enemies/WitchWalking_2.png" id="6_0d5l0"]
+[ext_resource type="Texture2D" uid="uid://d0cuty64x83sg" path="res://assets/art/enemies/WitchWalking_3.png" id="7_s0tmk"]
+[ext_resource type="Texture2D" uid="uid://llifyecdkkd5" path="res://assets/art/enemies/SkullWalking_1.png" id="8_of0j2"]
+[ext_resource type="Texture2D" uid="uid://baqwin8m2teq3" path="res://assets/art/enemies/SkullWalking_2.png" id="9_cftwk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gwkv2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7d1ca")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_j50fq")
+}],
+"loop": true,
+"name": &"Cousin",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_t0p7c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3e06j")
+}],
+"loop": true,
+"name": &"Wallace",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_0d5l0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_s0tmk")
+}],
+"loop": true,
+"name": &"Witch",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_of0j2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_cftwk")
+}],
+"loop": true,
+"name": &"Zolstar",
+"speed": 3.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wqexu"]
+radius = 26.0
+height = 76.0
+
+[node name="Band" type="RigidBody2D" groups=["mobs"]]
+collision_layer = 2
+gravity_scale = 0.0
+script = ExtResource("1_83mrx")
+metadata/_edit_group_ = true
+metadata/Entity = "Cousin It"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_gwkv2")
+animation = &"Wallace"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_wqexu")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-100, -100, 200, 200)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

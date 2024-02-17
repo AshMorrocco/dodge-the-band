@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxatvu4rnfge8"]
+
+[ext_resource type="Texture2D" uid="uid://l0u34kuf0au7" path="res://assets/art/items/Heart.png" id="2_xxpx2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_py6pd"]
+
+[node name="Heart" type="Area2D"]
+collision_layer = 4
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_py6pd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["collectable"]]
+texture = ExtResource("2_xxpx2")

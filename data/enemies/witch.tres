@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Enemy" load_steps=2 format=3 uid="uid://ld6g30ch45lv"]
+
+[ext_resource type="Script" path="res://data/enemy.gd" id="2_rqqfe"]
+
+[resource]
+script = ExtResource("2_rqqfe")
+type = "Witch"
+health_effect = -1
+kill = true

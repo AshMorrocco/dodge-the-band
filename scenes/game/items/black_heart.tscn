@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://q7ikssf1uhww"]
+
+[ext_resource type="Texture2D" uid="uid://bkvab76dewxx1" path="res://assets/art/items/black_heart.png" id="1_g57er"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_py6pd"]
+
+[node name="BlackHeart" type="Area2D"]
+collision_layer = 4
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_py6pd")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["collectable"]]
+texture = ExtResource("1_g57er")

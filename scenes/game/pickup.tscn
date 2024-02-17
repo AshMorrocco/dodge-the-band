@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgacogva22da4"]
+
+[ext_resource type="Texture2D" uid="uid://4uy0j0ncc3hl" path="res://assets/art/items/Heart_green.png" id="2_4eqry"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_py6pd"]
+
+[node name="Pickup" type="Area2D"]
+collision_layer = 4
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_py6pd")
+
+[node name="PickupSprite" type="Sprite2D" parent="." groups=["collectable"]]
+unique_name_in_owner = true
+texture = ExtResource("2_4eqry")
