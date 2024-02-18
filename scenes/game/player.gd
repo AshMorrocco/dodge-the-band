@@ -90,27 +90,11 @@ func die(cause:String):
 	$Weapon.hide()
 
 func _on_area_entered(area):
-#	Everything is a pickup for now
-	assert(area.get_meta("pickup_type") is Pickup)
-		
-	var item_encountered:Pickup = area.get_meta("pickup_type")
 	area.queue_free()
 	
-	if item_encountered.is_collectable:
-		collectedItem.emit(item_encountered)
-	var health_delta = item_encountered.health_effect
-	if health >= maximum_health && health_delta > 0:
-		health_delta = 0
-		
-	if health <= 1 && health_delta < 0:
-		if item_encountered.kill == false:
-			health_delta = 0 
-		
-	health += health_delta
-	HPChanged.emit(health, health_delta)
-	
-	if (health <= 0):
-		die(item_encountered.type)
+#	Handle pickups elsewhere
+	if(area.get_meta("pickup_type") is Pickup):
+		process_pickup(area.get_meta("pickup_type"))
 
 
 ## When colliding with an enemy
@@ -134,3 +118,25 @@ func _on_body_entered(body):
 func _on_weapon_body_entered(body):
 	tookalife.emit()
 	body.queue_free()
+	
+
+func process_pickup(item_encountered):
+	if item_encountered.is_collectable:
+		collectedItem.emit(item_encountered)
+		
+	var health_delta = item_encountered.health_effect
+	if health >= maximum_health && health_delta > 0:
+		health_delta = 0
+		
+	if health <= 1 && health_delta < 0:
+		if item_encountered.kill == false:
+			health_delta = 0 
+		
+	health += health_delta
+	HPChanged.emit(health, health_delta)
+	
+	if (health <= 0):
+		die(item_encountered.type)
+
+func process_enemy_encounter():
+	pass

@@ -36,7 +36,7 @@ func new_game():
 	get_tree().call_group("mobs", "queue_free")
 	score = 0
 	$Player.start($StartPosition.position)
-	$Music.play()
+#	$Music.play()
 	$StartTimer.start()
 	$HUD.update_score(score)
 	$HUD.show_message("Get ready...")
@@ -44,7 +44,7 @@ func new_game():
 
 
 func game_over(who_landed_killing_blow):
-	$Music.stop()
+#	$Music.stop()
 	$DeathSound.play()
 	$MobTimer.stop()
 	$CollectableTimer.stop()

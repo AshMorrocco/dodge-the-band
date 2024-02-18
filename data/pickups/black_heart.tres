@@ -5,8 +5,8 @@
 
 [resource]
 script = ExtResource("1_h13oi")
-type = "black_heart"
+type = "Black Heart"
 sprite = ExtResource("3_utqkm")
 health_effect = -1
-kill = false
+kill = true
 is_collectable = false
