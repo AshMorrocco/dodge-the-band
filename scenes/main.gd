@@ -10,10 +10,12 @@ var _all_pickups:Array[Pickup]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+#	Nab all our possible enemies
 	for file in DirAccess.get_files_at("res://data/enemies/"):
 		var resource_file = "res://data/enemies/" + file
 		var enemy:Enemy = load(resource_file) as Enemy
 		_all_enemies.append(enemy)
+#	Nab all our possible items
 	for file in DirAccess.get_files_at("res://data/pickups/"):
 		var resource_file = "res://data/pickups/" + file
 		var pickup:Pickup = load(resource_file) as Pickup
@@ -47,17 +49,17 @@ func game_over(who_landed_killing_blow):
 #	$Music.stop()
 	$DeathSound.play()
 	$MobTimer.stop()
-	$CollectableTimer.stop()
+	$PickupTimer.stop()
 	$HUD.show_game_over(who_landed_killing_blow)
 
 
 func _on_mob_timer_timeout():
 	# Create a new instance of the Mob scene
 	var mob_to_spawn = _all_enemies.pick_random()
-	var mob = enemyScene.instantiate()
+	var enemy_scene = enemyScene.instantiate()
 	
-	mob.get_node("AnimatedSprite2D").play(mob_to_spawn.type)
-	mob.set_meta("mob_name", mob_to_spawn.type)
+	enemy_scene.get_node("AnimatedSprite2D").play(mob_to_spawn.type)
+	enemy_scene.set_meta("mob_type", mob_to_spawn)
 	
 	# Choose a random location on Path2d
 	var mob_spawn_location = get_node("Path2D/PathFollow2D")
@@ -72,18 +74,18 @@ func _on_mob_timer_timeout():
 	var direction = mob_spawn_location.rotation + PI / 2
 
 	# Set the mob's position to a random location.
-	mob.position = mob_spawn_location.position
+	enemy_scene.position = mob_spawn_location.position
 
 	# Add some randomness to the direction.
 	direction += randf_range(-PI / 4, PI / 4)
-	mob.rotation = direction
+	enemy_scene.rotation = direction
 
 	# Choose the velocity for the mob.
 	var velocity = Vector2(randf_range(150.0, 250.0), 0.0)
-	mob.linear_velocity = velocity.rotated(direction)
+	enemy_scene.linear_velocity = velocity.rotated(direction)
 
 	# Spawn the mob by adding it to the Main scene.
-	add_child(mob)
+	add_child(enemy_scene)
 
 func _on_score():
 	score += 1

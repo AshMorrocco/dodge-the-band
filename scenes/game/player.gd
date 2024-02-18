@@ -1,18 +1,20 @@
 extends Area2D
 
-signal HPChanged(health, delta) ## When HP changes, report total HP and the change
-signal died(killing_entity) ## when hp hits 0, report what enemy we are touching
-signal collectedItem(item) ## looooot
+signal HPChanged(health:int, delta:int) ## When HP changes, report total HP and the change
+signal died(killing_entity:String) ## when hp hits 0, report what enemy we are touching
+signal collectedItem(item:Pickup) ## looooot
 signal tookalife ## When we cause an enemy to vanish
 
-@export var speed = 400 ## How fast the player will move (px/s)
-@export var default_health = 3 ## How many hits the player can take, 
-@export var maximum_health = 4 ## How many HP we cap out at 
-@export var onhitdamage = 1 ## How much damage we take on hit
-var screen_size ## Size of the game window
-var health = default_health
-var aim = Vector2(1.0, 0.0) # Aim right by default
-var damage_invuln = false
+@export var speed:int = 400 ## How fast the player will move (px/s)
+@export var default_health:int = 3 ## How many hits the player can take, 
+@export var maximum_health:int = 4 ## How many HP we cap out at 
+@export var onhitdamage:int = 1 ## How much damage we take on hit
+var screen_size:Vector2 ## Size of the game window
+var health:int = default_health
+var aim:Vector2 = Vector2(1.0, 0.0) # Aim right by default
+var invulnerable:bool = false
+var game_over:bool = true
+var cause_of_death:String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,7 +25,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if damage_invuln:
+	if (!game_over and health <= 0): 
+		die()
+#	Physics is past here, don't apply if we can't move
+	if invulnerable or game_over:
 		return
 		
 	var velocity = Vector2.ZERO # The player's movement vector
@@ -63,14 +68,13 @@ func _process(delta):
 	if Input.is_action_just_pressed("attack"):
 		attack()
 
-
-
 func start(pos):
 	health = default_health
 	HPChanged.emit(default_health, 0) ## Delta is 0 to indicate new game
 	position = pos
 	$AnimatedSprite2D.animation = "walk"
-	damage_invuln = false
+	invulnerable = false
+	game_over=false
 	show()
 	$CollisionShape2D.disabled = false
 
@@ -81,62 +85,80 @@ func attack():
 	$Weapon.hide()
 	$Weapon/WeaponHitbox.disabled = true
 
-func die(cause:String):
-	died.emit(cause)
-	damage_invuln = true
+func take_lethal_damage(damage_amount:int):
+	health += damage_amount
+	if(health <= 0):
+		health = 0
+	HPChanged.emit(health, damage_amount)
+	return health
+
+func take_nonlethal_damage(damage_amount:int):
+	if(health + damage_amount <= 0):
+		health = 1
+	else:
+		health += damage_amount
+	HPChanged.emit(health, damage_amount)
+	return health
+
+func recover_health(healing_amount:int):
+	if (health + healing_amount >= maximum_health):
+		health = maximum_health
+	else:
+		health += healing_amount
+	HPChanged.emit(health, healing_amount)
+	return health
+
+func die():
+	died.emit(cause_of_death)
+	game_over = true
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)
 	$AnimatedSprite2D.animation = "hurt"
 	$Weapon.hide()
 
+func process_pickup(_pickup:Pickup):
+	if _pickup.is_collectable:
+		collectedItem.emit(_pickup)
+	
+	if _pickup.health_effect > 0:
+		recover_health(_pickup.health_effect)
+	elif _pickup.health_effect < 0:
+		if _pickup.kill == true:
+			take_lethal_damage(_pickup.health_effect)
+		else:
+			take_nonlethal_damage(_pickup.health_effect)
+	#If this pickup caused us to di, we should let the rest of the game know what did it
+	if (health <= 0):
+		cause_of_death = _pickup.type
+
+func process_enemy_attack(_enemy:Enemy):
+	take_lethal_damage(-1)
+	invulnerable = true
+	# Must be deferred as we can't change physics properties on a physics callback.
+	$CollisionShape2D.set_deferred("disabled", true)
+	$AnimatedSprite2D.animation = "hurt"
+	$Weapon.hide()
+	if (health <= 0):
+		cause_of_death = _enemy.type
+	else:
+		await get_tree().create_timer(0.5).timeout 
+		$AnimatedSprite2D.animation = "walk"
+		invulnerable = false
+		$CollisionShape2D.set_deferred("disabled", false)
+
 func _on_area_entered(area):
 	area.queue_free()
-	
 #	Handle pickups elsewhere
 	if(area.get_meta("pickup_type") is Pickup):
 		process_pickup(area.get_meta("pickup_type"))
 
-
-## When colliding with an enemy
 func _on_body_entered(body): 
-	health -= onhitdamage
-	HPChanged.emit(health, -onhitdamage)
-	damage_invuln = true
-	# Must be deferred as we can't change physics properties on a physics callback.
-	$CollisionShape2D.set_deferred("disabled", true)
-	$AnimatedSprite2D.animation = "hurt"
-	$Weapon.hide()
-	if (health <= 0):
-		die(body.get_meta("mob_name"))
-	else:
-		body.queue_free()
-		await get_tree().create_timer(0.5).timeout 
-		$AnimatedSprite2D.animation = "walk"
-		damage_invuln = false
-		$CollisionShape2D.set_deferred("disabled", false)
+	body.queue_free()
+	if(body.get_meta("mob_type") is Enemy):
+		process_enemy_attack(body.get_meta("mob_type"))
 
 func _on_weapon_body_entered(body):
 	tookalife.emit()
 	body.queue_free()
-	
 
-func process_pickup(item_encountered):
-	if item_encountered.is_collectable:
-		collectedItem.emit(item_encountered)
-		
-	var health_delta = item_encountered.health_effect
-	if health >= maximum_health && health_delta > 0:
-		health_delta = 0
-		
-	if health <= 1 && health_delta < 0:
-		if item_encountered.kill == false:
-			health_delta = 0 
-		
-	health += health_delta
-	HPChanged.emit(health, health_delta)
-	
-	if (health <= 0):
-		die(item_encountered.type)
 
-func process_enemy_encounter():
-	pass

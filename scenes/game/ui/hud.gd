@@ -6,9 +6,6 @@ signal start_game
 func _ready():
 	$DamageOverlay.hide()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
 
 func show_message(text):
 	$Message.text = text

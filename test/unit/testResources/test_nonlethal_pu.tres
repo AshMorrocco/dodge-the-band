@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Pickup" load_steps=3 format=3 uid="uid://cmwbty3lefx6u"]
+
+[ext_resource type="Script" path="res://data/pickup.gd" id="1_wrxu4"]
+[ext_resource type="Texture2D" uid="uid://4uy0j0ncc3hl" path="res://assets/art/items/Heart_green.png" id="2_3r0po"]
+
+[resource]
+script = ExtResource("1_wrxu4")
+type = "Green Heart"
+sprite = ExtResource("2_3r0po")
+health_effect = -1
+kill = false
+is_collectable = false

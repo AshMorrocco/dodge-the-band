@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Pickup" load_steps=3 format=3 uid="uid://1bogmrc68ocw"]
+
+[ext_resource type="Script" path="res://data/pickup.gd" id="1_30uqf"]
+[ext_resource type="Texture2D" uid="uid://bkvab76dewxx1" path="res://assets/art/items/black_heart.png" id="2_wmfme"]
+
+[resource]
+script = ExtResource("1_30uqf")
+type = "Black Heart"
+sprite = ExtResource("2_wmfme")
+health_effect = -1
+kill = true
+is_collectable = false
