@@ -1,11 +1,9 @@
-[gd_resource type="Resource" script_class="Enemy" load_steps=3 format=3 uid="uid://d0rcwpyg07utd"]
+[gd_resource type="Resource" script_class="Enemy" load_steps=2 format=3 uid="uid://d0rcwpyg07utd"]
 
 [ext_resource type="Script" path="res://data/enemy.gd" id="1_4mx2w"]
-[ext_resource type="PackedScene" uid="uid://b0n3qdem2p4en" path="res://scenes/game/enemy.tscn" id="1_kmuri"]
 
 [resource]
 script = ExtResource("1_4mx2w")
 type = "Zolstar"
-scene = ExtResource("1_kmuri")
 health_effect = -1
 kill = true

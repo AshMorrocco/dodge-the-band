@@ -132,12 +132,14 @@ func process_pickup(_pickup:Pickup):
 		cause_of_death = _pickup.type
 
 func process_enemy_attack(_enemy:Enemy):
-	take_lethal_damage(-1)
 	invulnerable = true
 	# Must be deferred as we can't change physics properties on a physics callback.
 	$CollisionShape2D.set_deferred("disabled", true)
 	$AnimatedSprite2D.animation = "hurt"
 	$Weapon.hide()
+	
+	take_lethal_damage(_enemy.health_effect)
+	
 	if (health <= 0):
 		cause_of_death = _enemy.type
 	else:

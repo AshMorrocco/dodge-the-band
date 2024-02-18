@@ -7,6 +7,6 @@
 script = ExtResource("1_wrxu4")
 type = "Green Heart"
 sprite = ExtResource("2_3r0po")
-health_effect = -1
+health_effect = -3
 kill = false
 is_collectable = false

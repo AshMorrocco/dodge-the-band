@@ -3,10 +3,10 @@ extends GutTest
 var Player = load("res://scenes/game/player.gd")
 var _player = null
 
-
-
 func before_each():
 	_player = Player.new()
+	_player.health = 3
+	_player.maximum_health = 4
 
 func after_each():
 	_player.free()
@@ -46,21 +46,17 @@ var TestLethalPickup:Pickup = preload("res://test/unit/testResources/test_lethal
 var TestNonLethalPickup:Pickup =preload("res://test/unit/testResources/test_nonlethal_pu.tres")
 var TestHealingPickup:Pickup = preload("res://test/unit/testResources/test_healing_pu.tres")
 var TestCollectable:Pickup = preload("res://test/unit/testResources/test_collectable.tres")
-var TestEnemy:Enemy = preload("res://test/unit/testResources/test_enemy.tres")
 
 func test_process_pickup():
 	_player.health = 2
-	_player.maximum_health = 4
 	# Make sure collectables can change health
 	_player.process_pickup(TestCollectable)
 	assert_eq(_player.health, 3, "Health Should be 3" )
 	
 	# We need to be able to heal
-	_player.health = 3
 	_player.process_pickup(TestHealingPickup)
 	assert_eq(_player.health, 4, "Health Should be 4" )
 	
-	_player.health = 1
 	_player.process_pickup(TestNonLethalPickup)
 	assert_eq(_player.health, 1, "Health Should be 1" )
 	
@@ -69,3 +65,9 @@ func test_process_pickup():
 	assert_eq(_player.health, 0, "Health Should be 0" )
 	assert_eq(_player.cause_of_death, "Black Heart")
 	assert_signal_emitted(_player, "HPChanged", "Should emit a health changed signal")
+
+#var TestEnemy:Enemy = preload("res://test/unit/testResources/test_enemy.tres")
+#
+#func test_process_enemy_attack():
+	#_player.process_enemy_attack(TestEnemy)
+	#assert_eq(_player.health, 2, "Health Should be 2" )
