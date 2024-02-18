@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0n3qdem2p4en"]
+[gd_scene load_steps=14 format=3 uid="uid://b0n3qdem2p4en"]
 
 [ext_resource type="Script" path="res://scenes/game/enemy.gd" id="1_83mrx"]
 [ext_resource type="Texture2D" uid="uid://b7ca52mo1lyji" path="res://assets/art/enemies/CousinWalking_2.png" id="2_7d1ca"]
 [ext_resource type="Texture2D" uid="uid://78u14luoe0bg" path="res://assets/art/enemies/CousinWalking_3.png" id="3_j50fq"]
+[ext_resource type="Texture2D" uid="uid://qfvods0bncdv" path="res://assets/art/enemies/fairy_walking1.png" id="4_am1qx"]
 [ext_resource type="Texture2D" uid="uid://dbh5rau3vfnkl" path="res://assets/art/enemies/wallaceWalking_1.png" id="4_t0p7c"]
 [ext_resource type="Texture2D" uid="uid://bijrqm21dcdti" path="res://assets/art/enemies/wallaceWalking_2.png" id="5_3e06j"]
+[ext_resource type="Texture2D" uid="uid://5d6uv0v5uc7o" path="res://assets/art/enemies/fairy_walking2.png" id="5_dpmqu"]
 [ext_resource type="Texture2D" uid="uid://hffghcw570n5" path="res://assets/art/enemies/WitchWalking_2.png" id="6_0d5l0"]
 [ext_resource type="Texture2D" uid="uid://d0cuty64x83sg" path="res://assets/art/enemies/WitchWalking_3.png" id="7_s0tmk"]
 [ext_resource type="Texture2D" uid="uid://llifyecdkkd5" path="res://assets/art/enemies/SkullWalking_1.png" id="8_of0j2"]
@@ -22,6 +24,17 @@ animations = [{
 "loop": true,
 "name": &"Cousin",
 "speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_am1qx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dpmqu")
+}],
+"loop": true,
+"name": &"Fairy",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -70,7 +83,7 @@ metadata/Entity = "Cousin It"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gwkv2")
-animation = &"Wallace"
+animation = &"Fairy"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
