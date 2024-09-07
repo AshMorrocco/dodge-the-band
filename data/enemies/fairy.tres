@@ -1,9 +1,13 @@
-[gd_resource type="Resource" script_class="Enemy" load_steps=2 format=3 uid="uid://5h66thx6kjd4"]
+[gd_resource type="Resource" script_class="Enemy" load_steps=4 format=3 uid="uid://5h66thx6kjd4"]
 
 [ext_resource type="Script" path="res://data/enemy.gd" id="1_co2c0"]
+[ext_resource type="Texture2D" uid="uid://qfvods0bncdv" path="res://assets/art/enemies/fairy_walking1.png" id="1_kidq5"]
+[ext_resource type="Texture2D" uid="uid://5d6uv0v5uc7o" path="res://assets/art/enemies/fairy_walking2.png" id="2_ykpcp"]
 
 [resource]
 script = ExtResource("1_co2c0")
 type = "Fairy"
 health_effect = 2
 kill = false
+frame1 = ExtResource("1_kidq5")
+frame2 = ExtResource("2_ykpcp")

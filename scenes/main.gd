@@ -2,60 +2,73 @@ extends Node
 
 @export var enemyScene:PackedScene
 @export var pickupScene:PackedScene
-var score
 var paused = false
 
 var _all_enemies:Array[Enemy]
+var inactive_enemy_types:Array[Enemy]
+var active_enemy_types:Array[Enemy]
 var _all_pickups:Array[Pickup]
+var possible_pickups:Array[Pickup]
+var coinsCollected:int = 0
+var hatsCollected:int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 #	Nab all our possible enemies
 	for file in DirAccess.get_files_at("res://data/enemies/"):
+		file = file.replace(".remap", "")
 		var resource_file = "res://data/enemies/" + file
 		var enemy:Enemy = load(resource_file) as Enemy
 		_all_enemies.append(enemy)
 #	Nab all our possible items
 	for file in DirAccess.get_files_at("res://data/pickups/"):
+		file = file.replace(".remap", "")
 		var resource_file = "res://data/pickups/" + file
 		var pickup:Pickup = load(resource_file) as Pickup
 		_all_pickups.append(pickup)
 
+func initialize_enemy_array():
+	# We just want wallace to spawn at the start of the game
+	# TODO: dynamically point to wallace 
+	inactive_enemy_types = _all_enemies.duplicate(true)
+	active_enemy_types.clear()
+	active_enemy_types.append(inactive_enemy_types[4])
+	inactive_enemy_types.remove_at(4)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("toggle_pause"):
-		paused = !paused
-		get_tree().paused = paused
-		$HUD.pause_game(paused)
-		$StartTimer.paused = paused
-		$MobTimer.paused = paused
-		$PickupTimer.paused = paused
+		pause_button_pressed()
 
+func pause_button_pressed():
+	paused = !paused
+	get_tree().paused = paused
+	$HUD.pause_game(paused)
+	$StartTimer.paused = paused
+	$MobTimer.paused = paused
+	$PickupTimer.paused = paused
 
 func new_game():
+	initialize_enemy_array()
 	get_tree().call_group("collectable", "queue_free")
 	get_tree().call_group("mobs", "queue_free")
-	score = 0
+	hatsCollected = 0
+	coinsCollected = 0
 	$Player.start($StartPosition.position)
-#	$Music.play()
+	$Music.play()
 	$StartTimer.start()
-	$HUD.update_score(score)
 	$HUD.show_message("Get ready...")
-	
-
 
 func game_over(who_landed_killing_blow):
-#	$Music.stop()
+	$Music.stop()
 	$DeathSound.play()
 	$MobTimer.stop()
 	$PickupTimer.stop()
 	$HUD.show_game_over(who_landed_killing_blow)
 
-
 func _on_mob_timer_timeout():
 	# Create a new instance of the Mob scene
-	var mob_to_spawn = _all_enemies.pick_random()
+	var mob_to_spawn = active_enemy_types.pick_random()
 	var enemy_scene = enemyScene.instantiate()
 	
 	enemy_scene.get_node("AnimatedSprite2D").play(mob_to_spawn.type)
@@ -87,10 +100,6 @@ func _on_mob_timer_timeout():
 	# Spawn the mob by adding it to the Main scene.
 	add_child(enemy_scene)
 
-func _on_score():
-	score += 1
-	$HUD.update_score(score)
-
 
 func _on_start_timer_timeout():
 	paused = false
@@ -106,4 +115,35 @@ func _on_collectable_timer_timeout():
 	pickup_scene.get_node("PickupSprite").set_texture(pickup_to_spawn.sprite)
 	pickup_scene.position.x = randi_range( 10, 1270)
 	pickup_scene.position.y = randi_range(10, 710)
+	
+	# Dont spawn pickup within 100 px of player
+	var dist = pickup_scene.position.distance_to(get_node("Player").position)
+	if dist < 100:
+		return
+		
 	add_child(pickup_scene)
+
+
+func _on_player_hp_changed(health, delta):
+	$HUD.set_HP(health)
+	if delta < 0:
+		$HUD.show_damage_overlay()
+		$DamageSound.play()
+
+# TODO: move effects to an array of effects as property on pickup
+func _on_player_collected_item(_pickup:Pickup):
+	if(_pickup.type == "coin"):
+		coinsCollected += 1
+		$HUD.set_collectable_label("Coins: ", coinsCollected)
+		if coinsCollected % 5 == 0 and inactive_enemy_types.size() > 0:
+			var new_enemy_type_unlocked = inactive_enemy_types.pop_back()
+			active_enemy_types.append(new_enemy_type_unlocked)
+			$HUD.show_message(new_enemy_type_unlocked.type + " Unlocked!!!")
+	if(_pickup.type == "hat"):
+		hatsCollected += 1
+		$HUD.set_collectable_label("Hats: ", hatsCollected)
+	return _pickup
+
+func _on_player_score_changed(score:int, _scoreDelta:int):
+	$HUD.update_score(score)
+

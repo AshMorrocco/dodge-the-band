@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Enemy" load_steps=6 format=3 uid="uid://b5yeq8bsypod5"]
+
+[ext_resource type="Texture2D" uid="uid://ccyby2qmphvd" path="res://assets/art/enemies/brain_1.png" id="1_ijiwc"]
+[ext_resource type="Texture2D" uid="uid://dlm7pe4twb5we" path="res://assets/art/enemies/brain_2.png" id="2_cxuu0"]
+[ext_resource type="Script" path="res://data/enemy.gd" id="3_ckobp"]
+[ext_resource type="Texture2D" uid="uid://cp522n1nh6o8c" path="res://assets/art/enemies/brain_3.png" id="3_fko6x"]
+[ext_resource type="Texture2D" uid="uid://ccgs4ba7jpi0a" path="res://assets/art/enemies/brain_4.png" id="4_mikna"]
+
+[resource]
+script = ExtResource("3_ckobp")
+type = "Brain"
+health_effect = -1
+point_value = 5
+kill = true
+frames = Array[Texture2D]([ExtResource("1_ijiwc"), ExtResource("2_cxuu0"), ExtResource("3_fko6x"), ExtResource("4_mikna")])

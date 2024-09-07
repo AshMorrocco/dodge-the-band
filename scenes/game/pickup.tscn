@@ -4,11 +4,11 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_py6pd"]
 
-[node name="Pickup" type="Area2D"]
+[node name="Pickup" type="Area2D" groups=["collectable"]]
 collision_layer = 4
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["collectable"]]
 shape = SubResource("CircleShape2D_py6pd")
 
 [node name="PickupSprite" type="Sprite2D" parent="." groups=["collectable"]]

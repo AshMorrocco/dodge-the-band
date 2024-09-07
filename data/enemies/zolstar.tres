@@ -6,4 +6,6 @@
 script = ExtResource("1_4mx2w")
 type = "Zolstar"
 health_effect = -1
+point_value = 1
 kill = true
+frames = Array[Texture2D]([])

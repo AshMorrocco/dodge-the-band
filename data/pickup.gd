@@ -6,3 +6,4 @@ extends Resource
 @export var health_effect:int
 @export var kill:bool
 @export var is_collectable:bool
+

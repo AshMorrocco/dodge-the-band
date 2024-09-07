@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Enemy" load_steps=2 format=3 uid="uid://tpfw4nxgg2b6"]
+
+[ext_resource type="Script" path="res://data/enemy.gd" id="1_u70gi"]
+
+[resource]
+script = ExtResource("1_u70gi")
+type = "Fresna"
+health_effect = -1
+point_value = 2
+kill = true
+frames = Array[Texture2D]([])

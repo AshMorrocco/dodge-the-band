@@ -6,7 +6,6 @@ signal start_game
 func _ready():
 	$DamageOverlay.hide()
 
-
 func show_message(text):
 	$Message.text = text
 	$Message.show()
@@ -27,12 +26,6 @@ func show_game_over(who_landed_killing_blow):
 func update_score(score):
 	$ScoreLabel.text = str(score)
 
-func update_HP(health, delta):
-	set_HP(health)
-	if delta < 0:
-		show_damage_overlay()
-	
-		
 func show_damage_overlay():
 	$DamageOverlay.show()
 	$OverlayTimer.start()
@@ -47,17 +40,16 @@ func pause_game(paused):
 	$Message.visible = paused
 	$DamageOverlay.visible = paused
 
-func picked_up_collectable(pickup:Pickup):
-	%CollectableLabel.text = pickup.type
+func set_collectable_label(label:String, amount:int):
+	%CollectableNote.text = label
+	%CollectableLabel.text = str(amount)
 	
 func _on_message_timer_timeout():
 	$Message.hide()
 
-
 func _on_start_button_pressed():
 	$StartButton.hide()
 	start_game.emit()
-
 
 func _on_overlay_timer_timeout():
 	$DamageOverlay.hide()

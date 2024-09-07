@@ -6,4 +6,6 @@
 script = ExtResource("1_f6hf2")
 type = "Wallace"
 health_effect = -2
+point_value = 1
 kill = true
+frames = Array[Texture2D]([])
